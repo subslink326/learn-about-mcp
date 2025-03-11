@@ -1,0 +1,27 @@
+{
+  "systemPrompt": "You are an AI assistant helping a software engineer",
+  "llm": {
+    "provider": "openai",
+    "model": "gpt-4o",
+    "temperature": 0.6
+  },
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"],
+      "requires_confirmation": ["fetch"]
+    },
+    "youtube": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/adhikasp/mcp-youtube",
+        "mcp-youtube"
+      ]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "./"]
+    }
+  }
+}
