@@ -1,0 +1,596 @@
+[0:00] hey it's Matt with repet here and if
+[0:01] you're trying to deploy an application
+[0:02] you're in the right place because today
+[0:04] we're going to talk about the four
+[0:05] different types of deployments that we
+[0:07] have on repet and we're going to go over
+[0:09] each type in detail we're going to talk
+[0:10] about what apps make the most sense for
+[0:13] each type and then in cases where you
+[0:16] could go either way specifically with
+[0:18] Reserve VMS or Autos skill deployments
+[0:20] we're going to discuss the pros and cons
+[0:22] of each approach and maybe there are
+[0:24] some things you could do to deploy uh
+[0:26] your applications with one but it might
+[0:28] not make sense um so we're going to go
+[0:30] over all of that first I'm going to walk
+[0:31] through the four different types uh and
+[0:33] then I'm going to present a decision
+[0:34] tree which you'll be able to find in the
+[0:36] comments uh in the links below that's
+[0:39] exactly the same logic I would use when
+[0:41] I'm trying to figure out how to deploy
+[0:43] my application so my goal is that by the
+[0:45] end of this video you're pretty
+[0:46] confident about how you deploy any
+[0:49] project that you're cooking up and I'll
+[0:51] link to some other tutorials that might
+[0:52] help you with more complex deployments
+[0:55] but let's jump right into it so our
+[0:56] first type of deployment is a static
+[0:58] deployment and the name is pretty selfes
+[0:59] sctive static deployments are called
+[1:02] Static because they compile to a set of
+[1:04] static files often these are HTML or
+[1:06] JavaScript files um but when I say
+[1:09] static I just mean they're being run by
+[1:11] the client they're being executed by
+[1:13] your browser and browsers most commonly
+[1:15] serve HTML files and execute JavaScript
+[1:17] files um now for example something like
+[1:20] running streamlet is not an example of
+[1:23] of a static file because in order to
+[1:25] serve uh you know a python uh
+[1:27] application like streamlet um you have
+[1:29] to to run streamlit main.py so you're
+[1:31] actively running a command against
+[1:34] python which is not live in the browser
+[1:37] now you'd be very surprised the
+[1:40] different types of things that you
+[1:41] actually can run in the browser because
+[1:43] browsers support running JavaScript
+[1:45] client side for example some really cool
+[1:47] demos with 3js I've shared similar demos
+[1:50] some really cool uh new projects from
+[1:52] the Transformers JS Library um which
+[1:55] involve running llms client side are all
+[1:58] becoming more possible so don't kind of
+[2:00] like throw shade at static deployments
+[2:01] for not you know having a client
+[2:03] component but what a static deployment
+[2:05] is is a set of pre-compiled static files
+[2:08] the thing about that is that they're
+[2:10] very fast to deploy you can deploy them
+[2:12] in quite literally seconds on repet uh
+[2:14] and if you're looking for a parallel
+[2:16] here maybe you're still trying to bridge
+[2:17] the gap as to what a static deployment
+[2:19] is think GitHub Pages if you can deploy
+[2:21] it on GitHub Pages you also can deploy
+[2:22] it as a static deployment on repet our
+[2:25] requirements for static deployments are
+[2:27] a public directory and a build command
+[2:30] the public directory is where the output
+[2:32] of the build command goes so I think for
+[2:34] Frameworks like V that's uh dissed uh
+[2:37] for some under the Frameworks it might
+[2:38] be build it's just basically if you run
+[2:40] like mpm run build what's the directory
+[2:43] that those static files get output to
+[2:46] and then the build command follows from
+[2:47] that right npm run build would be your
+[2:49] build command if you're building to that
+[2:51] directory so pretty straightforward
+[2:52] static deployments are really great my
+[2:54] blog is deployed as a static deployment
+[2:57] um but they only serve a limited set of
+[2:59] deployments if you have a server if you
+[3:01] have something that's actively running a
+[3:03] framework this is not the deployment for
+[3:05] you but we're going to go on to our next
+[3:08] deployment which is also pretty simple
+[3:10] pretty straightforward and those are
+[3:12] scheduled deployments scheduled
+[3:13] deployments as the name would suggest
+[3:15] are scripts that run on a schedule and
+[3:17] these could be great for fetching
+[3:19] scraping updating data they could be
+[3:22] great for any number of things that you
+[3:24] need executed maybe sending a message to
+[3:26] a slack Channel um or uh performing an
+[3:29] action on a set Cadence and the great
+[3:31] part about scheduled deployments is that
+[3:33] they're going to execute once and then
+[3:34] they'll be off so if you think about you
+[3:37] know how much compute you're using it's
+[3:39] likely lower than if you just ran
+[3:40] something constantly because scheduled
+[3:42] deployments ex are executed and then
+[3:44] shut down they don't really have a UI
+[3:47] the UI wouldn't be available for the
+[3:48] user so if you need a scheduled uh job
+[3:51] as a part of some larger application you
+[3:53] might think about multiple deployments
+[3:54] or folding that scheduled job into uh
+[3:58] another type of deployment now if you're
+[4:00] familiar you can think about a scheduled
+[4:01] deployment like a Cron job we actually
+[4:03] use the KRON syntax when defining the
+[4:05] scheduled deployment if you're not
+[4:07] familiar with that don't worry because
+[4:08] we compile natural language to that
+[4:11] syntax we make it really easy for you to
+[4:13] Define exactly how often you want the
+[4:15] thing to run or Define KRON syntax
+[4:18] because you know what that is so
+[4:19] requirements for a schedule deployment
+[4:21] we have a build command completely
+[4:23] optional we have a run command for
+[4:25] example if you wrote a python script
+[4:27] that went out and fetched data and it
+[4:28] was in Main .p your run command would be
+[4:31] python main.py then we have a timeout uh
+[4:34] for example if you're doing some kind of
+[4:36] fancy script that you know doesn't
+[4:38] necessarily work every time or or uh you
+[4:40] want to be terminated after a certain
+[4:42] number of minutes or you know a certain
+[4:44] number of seconds you could provide an
+[4:46] optional timeout but really all you need
+[4:48] for this one is a run command it's
+[4:49] pretty straightforward you're just
+[4:50] running a script so now we're getting
+[4:52] into the two more complex type of
+[4:54] deployments or I would call them complex
+[4:56] because it's easy to mix them up but the
+[4:58] first of which is reserved VM and a
+[5:01] reserved VM stands for a reserved
+[5:03] virtual machine again the name is very
+[5:05] descriptive here is just an always on
+[5:07] sort of machine that's running in the
+[5:09] background that you deploy your app to
+[5:11] so if I had python you know main.py and
+[5:14] I wanted it to run continuously I deploy
+[5:16] it to a reserve em it's going to run and
+[5:19] execute Python main.py and it's going to
+[5:21] keep that command alive until I tell it
+[5:23] not to so in a reserve VM the machine is
+[5:26] always on what that means is that
+[5:27] because the machine has the same size
+[5:29] you're defining the size of the machine
+[5:31] when you deploy and it's always on
+[5:33] you're going to have a fixed cost it's
+[5:35] going to cost a certain amount of money
+[5:37] every month you know exactly what that
+[5:38] is it's not going to change now there
+[5:41] are downsides to that right if you
+[5:43] define a certain number of resources and
+[5:46] say your app blows up or you build an
+[5:48] API and deploy it and the API blows up
+[5:51] or it's doing something really hard and
+[5:52] you didn't Define enough resources your
+[5:54] users are probably going to experience
+[5:56] like degraded performance it's not going
+[5:57] to be good so uh you have to be careful
+[6:00] when you're allocating resources to be
+[6:02] sure that you know you're you're giving
+[6:03] your reserve VM enough to execute on the
+[6:06] jobs that you want it to the
+[6:07] requirements for a reserve VM are a
+[6:10] optional build type uh a run command you
+[6:12] need the Run command um an app type so
+[6:15] you're either defining a web server or a
+[6:18] background worker uh you know that just
+[6:20] determines if your app has like an
+[6:23] exposed front end for example if you
+[6:25] wanted to deploy say a Discord bot or a
+[6:27] slackbot those would be background
+[6:29] workers because they don't have a UI
+[6:30] they're actually really good choices for
+[6:32] Reserve VMS because uh if you think
+[6:34] about most of those Bots they need to
+[6:36] listen um constantly you know like if a
+[6:38] user is to put a slash command in slack
+[6:41] or put a command in Discord um and that
+[6:43] command is going to ping you know your
+[6:45] server and then the server is going to
+[6:47] do something and it's going to respond
+[6:48] to the command and those servers need to
+[6:50] be always on they need to be listening
+[6:53] uh for those commands so Reserve VMS are
+[6:55] really great for that often times you
+[6:57] know the types of computations or work
+[6:59] that you're doing
+[7:00] for those Bots isn't super intensive um
+[7:03] now right you could also deploy if your
+[7:05] slackbot is not responsive to the user
+[7:07] and it's just sending a message you know
+[7:09] every 20 minutes every day that could be
+[7:13] a scheduled deployment as well it would
+[7:14] be cheaper that way um but if you need
+[7:16] something that's always on you want to
+[7:18] go with a reserve VM and finally a port
+[7:21] configuration this is mostly optional
+[7:23] because if your app runs in repet we're
+[7:25] going to configure the port for you so
+[7:26] you don't really need to worry about
+[7:27] that um unless you're running into
+[7:29] problems deploying the app or you
+[7:31] haven't actually run the app and rep
+[7:33] replit or configured the port but
+[7:36] assuming that you said everything up
+[7:37] correctly this shouldn't really be
+[7:39] required so this brings me to our final
+[7:41] type of deployment autoscale deployments
+[7:43] autoscale deployments are scaling
+[7:45] servers they can scale up or down to
+[7:48] accommodate varying amounts of traffic
+[7:49] for your application so think about it
+[7:51] like if you post something on Twitter
+[7:52] maybe you you build an app and you're
+[7:54] trying it out you don't know if
+[7:55] anybody's going to use it and you just
+[7:56] like put it on X the the platform
+[7:59] formerly known as Twitter um and it goes
+[8:01] viral and a million people are coming to
+[8:03] view it if you configure autosale
+[8:04] deployments properly you can scale up
+[8:07] the number of machines automatically as
+[8:10] people come to your site uh and if you
+[8:13] select the proper machine resources this
+[8:15] is kind of like a trial and error logic
+[8:17] thing based on what your app does right
+[8:19] uh but if you configure the resources
+[8:21] properly um there shouldn't really be
+[8:23] any Interruption as all these people
+[8:25] come to your application because we're
+[8:27] going to spawn multiple instances and
+[8:28] scale this appli up to accommodate all
+[8:31] those people so autoscale deployments
+[8:33] are really powerful that way and the
+[8:34] flip side to that is that um if nobody
+[8:38] use your application that's most stuff I
+[8:41] post on on X honestly right if I don't
+[8:43] need to be worried about anything going
+[8:45] viral you know I need to be worried
+[8:46] about posting all this stuff and then
+[8:47] getting build for it because nobody
+[8:49] views it and it's running all the time
+[8:51] like if I spawned a bunch of resered VMS
+[8:53] they're always on they're running all
+[8:54] the time but with autoscale deployments
+[8:56] if nobody looks at your application it's
+[8:58] going to scale down to zero which means
+[9:00] that it just kind of like shuts off it's
+[9:01] like kind of like in sleep mode if you
+[9:03] think about like your your laptop goes
+[9:04] to sleep your deployment goes to sleep
+[9:06] what that means is that if nobody's
+[9:09] looking at your application and then one
+[9:10] person comes to see your application
+[9:12] there might be a small amount of time
+[9:13] where it has to wake up very much like a
+[9:15] computer waking up uh but often it's one
+[9:18] or two seconds it's unnoticeable and
+[9:20] then it's going to stay warm for quite
+[9:22] some time uh while other people use the
+[9:24] application that's really great because
+[9:27] it means I'm not getting build when it's
+[9:28] asleep and that's great for you know
+[9:30] like cost purposes there are some pros
+[9:32] and cons to that we're going to talk
+[9:33] about those uh a little bit later in the
+[9:35] video for an auto scale deployment you
+[9:37] optionally need a build commands you
+[9:38] need a run command obviously uh and you
+[9:41] need a port configuration again the port
+[9:43] configuration is likely already set also
+[9:45] note that there are many more
+[9:46] configuration options for the type of
+[9:48] machine when you're deploying via
+[9:50] autoscale because you can pick the
+[9:52] maximum number of machines that we scale
+[9:54] horizontally you know for example you
+[9:56] could scale one machine or you could
+[9:57] scale five um as well as the actual
+[10:01] power for each machine that's being
+[10:04] spawned so pay attention to that when
+[10:05] you're you're building your application
+[10:07] that's largely dependent on what your
+[10:08] app is doing so I'll leave that to you
+[10:11] now one additional thing before we dive
+[10:12] into my decision tree I want to talk a
+[10:14] bit about autoscale versus reserved
+[10:17] deployments uh because this is something
+[10:19] that's confusing it was confusing to me
+[10:20] when I first learned about the concept
+[10:22] so I want to try and break it down if
+[10:23] you're saying hey I know this thing
+[10:25] isn't static I know it's not a schedule
+[10:26] deployment it should probably be
+[10:27] autoscale or reserved I just really
+[10:29] don't know which one hopefully the sort
+[10:31] of cost certainty and wakeup uh
+[10:34] explanation can help you decide that but
+[10:36] if not I'm going to break it down a
+[10:38] little bit more so again autoscale
+[10:40] deployments are really for scaling
+[10:42] servers and they have a variable cost
+[10:44] right but reserved deployments are
+[10:47] always on they could be like a web
+[10:49] server or background worker uh and
+[10:50] they're going to have a fixed cost so
+[10:51] you get cost certainty with those we're
+[10:54] going to talk a bit more in depth like
+[10:56] technically about what that looks like
+[10:58] but the anal I like to use here is a
+[11:01] nest thermostat or a greenhouse right if
+[11:03] you have an apartment I'm in an
+[11:06] apartment now what a coincidence you
+[11:07] probably want a smart thermostat because
+[11:09] your smart thermostat is going to keep
+[11:11] the apartment cool when you're there or
+[11:13] keep it warm when you're there and then
+[11:14] when you leave it's going to save energy
+[11:16] and that saves you money especially in
+[11:17] California Energy prices are crazy here
+[11:20] what's the deal anyway uh your smart
+[11:22] thermostat is going to be intelligent
+[11:23] and save you money that means that when
+[11:25] nobody is using the space you're saving
+[11:28] money when people are using it you're
+[11:30] you're you're spending money but that's
+[11:32] the whole point right to be comfortable
+[11:33] if I had 40 people in here you know this
+[11:36] assumes I have friends you know for the
+[11:39] sake of this video Let's just assume I
+[11:41] have some friends if I had 40 people in
+[11:43] here if I managed to convince 40 people
+[11:45] to spend time with me this apartment
+[11:47] would probably get pretty warm and my
+[11:48] Nest Thermostat would sort of kick into
+[11:50] gear and cool the apartment down that's
+[11:53] like an autoscaling appointment as more
+[11:54] people come in you're going to kick up
+[11:56] those servers they're going to spin up
+[11:58] multiple instances and the the workload
+[12:01] shouldn't be interrupted at all and so
+[12:04] in that sense it's really great now Matt
+[12:06] you're probably saying okay well like
+[12:07] that sounds perfect why the heck would I
+[12:09] ever want the alternative a reserve VM
+[12:12] well I also have plants in here you
+[12:14] might not be able to see them in the
+[12:16] frame this is one such plant those
+[12:18] plants you know like if you think about
+[12:20] the optimal way to grow plants you don't
+[12:22] want the temperature to be like going
+[12:23] all over the place right you want the
+[12:25] temperature to be stable and that's the
+[12:27] whole concept of a greenhouse
+[12:29] uh so for other things you want a
+[12:31] constant temperature for example you
+[12:33] have a slackbot or a Discord bot it just
+[12:35] needs to be running all the time you
+[12:37] don't want it to scale down to zero
+[12:38] because it's actually watching for some
+[12:40] message similarly if you had an API
+[12:43] right the whole idea behind an API and
+[12:45] application programming interface is
+[12:47] that at any time someone could call that
+[12:49] API maybe you have another application
+[12:51] that's calling the API maybe you're
+[12:53] using something uh like nextjs which has
+[12:56] both client and server side code nexts
+[12:59] uses apis if you dig into uh like app
+[13:02] router and things like that those apis
+[13:05] have to be running all the time
+[13:06] otherwise the client might try to call
+[13:08] the API and if it's autoscale deployment
+[13:10] starts to spin up from zero and then it
+[13:11] takes there's some latency there right
+[13:13] and that's a non-optimal experience so
+[13:15] the analogy I like to use here Auto
+[13:17] scale deployments kind of like a NE Nest
+[13:19] Thermostat they're going to keep you
+[13:20] cool even if there's a lot of stuff
+[13:22] going on uh sometimes you need a
+[13:24] constant temperature Reserve VMS more
+[13:26] like a greenhouse okay that's my nerdy
+[13:29] analogy that I just really love for some
+[13:31] reason we're going to get into a
+[13:32] decision tree if you're still watching
+[13:34] this video I assume you have more
+[13:36] questions so this will cover basically
+[13:39] every scenario I could come up with when
+[13:41] you're trying to deploy okay so here's
+[13:43] my decision tree this is how I think
+[13:46] about building on repet we're going to
+[13:47] start with the simpler Solutions first
+[13:49] and we're going to dig into the more
+[13:50] complex stuff you're deploying an app or
+[13:52] website yeah actually no I'm not
+[13:55] deploying an app or website what am I
+[13:56] doing though I am building an API if
+[13:59] you're building an API just deploy a
+[14:01] reserve VM it's always on people will be
+[14:03] able to access your API um you just need
+[14:05] to Define uh the parameters you'd want
+[14:08] to use a reserve VM and not an Autos
+[14:10] scale deployment because of that cold
+[14:11] start uh problem I described earlier
+[14:14] where if nobody's using your API it's
+[14:15] going to shut off and you don't want
+[14:17] that if you're deploying an API if
+[14:19] you're deploying a bot I would put Bots
+[14:21] under the category of an API um or other
+[14:24] type of infra like that that has to
+[14:26] listen for some event Reserve easy
+[14:29] answer um also no I'm running a script
+[14:32] we talked about this scheduled jobs if
+[14:34] you're running a script it's not a bot
+[14:36] it's not a website you just want to run
+[14:37] something on a Cadence it doesn't need
+[14:38] to be running all the time it doesn't
+[14:40] have to accept user input it just needs
+[14:42] to run every day at a certain time you
+[14:45] deploy a scheduled job okay let's get to
+[14:49] the more interesting part of this
+[14:50] decision tree you're deploying an app or
+[14:52] a website yeah yeah all right cool let's
+[14:55] start on the right here my app needs a
+[14:57] server or Pro program that's running
+[15:00] continuously for example if I ran
+[15:02] something like python main.py or
+[15:05] streamlet main.py or NP or you're
+[15:08] running you know like next Uh
+[15:11] something's being continuously run now
+[15:13] there are a couple options here right
+[15:15] this is kind of what I was talking about
+[15:16] earlier we did the auto scale versus
+[15:17] reserved type deal uh same thing here
+[15:20] you could deploy this thing as the auto
+[15:22] scale deployment you could deploy it as
+[15:23] a reserve deployment there's another uh
+[15:26] solution we're going to talk about in a
+[15:28] little bit as well um so first option I
+[15:30] want to be able to scale up quickly to
+[15:32] handle large amounts of requests um and
+[15:35] I'm okay with variable cost and minimal
+[15:37] warm-up time you might be you might
+[15:40] already know what I'm referring to here
+[15:42] um so that's one option the other sort
+[15:44] of option is my app needs to be running
+[15:46] constantly with access to consistent
+[15:47] resources I want cost
+[15:49] certainty okay we're going to assume uh
+[15:53] my hypothetical app is on the left and
+[15:56] if it's on the left and if it meets
+[15:58] these criteria maybe it's a server it's
+[16:00] using httt HTTP http2 websockets or grpc
+[16:05] or I want to try out multiple ideas
+[16:07] without spending too much this is kind
+[16:08] of like the X example that I mentioned
+[16:10] right I could post 100,000 apps if
+[16:13] nobody uses any of them I'm not getting
+[16:14] buil for them um then we'd want Autos
+[16:17] scale deployments cool now Flip Flip
+[16:20] that over to the other uh sort of option
+[16:22] here maybe I want a wrong Lan con
+[16:24] connection I want to deploy a bot I want
+[16:27] to run a background activity outside of
+[16:29] request handling okay so uh in in
+[16:33] addition to just handling the user
+[16:35] requests I want to be running something
+[16:37] in the background I want this thing to
+[16:38] be constantly doing something um my app
+[16:41] is not a server uh my app does not
+[16:43] tolerate being restarted easily one of
+[16:46] the things about autoscale deployments
+[16:48] is that if it scales down to zero your
+[16:50] app's going to restart and this gets us
+[16:52] into like persistent data within reples
+[16:55] the repple storage is not persistent
+[16:57] it's actually a snapshot of your
+[16:59] application when you click deploy so
+[17:00] think of all the files and directories
+[17:02] in your app when you click deploy that's
+[17:05] snapshotted and deploy if you have like
+[17:07] a SQL light database in there SQL light
+[17:10] database is not going to persist that's
+[17:12] why you'd need to use persistent data in
+[17:15] the form of a postgress database that's
+[17:17] we have options for a key value database
+[17:19] we have options for our object storage
+[17:20] which we also have options for um but if
+[17:23] your app does not tolerate being restart
+[17:25] easily uh Reserve VMS are a great choice
+[17:28] for you and all of these tie into
+[17:30] Reserve vmss cool let's continue down
+[17:32] the left here we're actually getting
+[17:34] through this pretty well my app is
+[17:36] entirely client side code we've talked
+[17:38] about this if your app is running on the
+[17:39] client that can actually be some pretty
+[17:41] cool stuff right you could have some
+[17:43] pretty neat visualizations I've actually
+[17:44] shared a few it can be deployed on
+[17:46] GitHub Pages it can be deployed on cloud
+[17:48] Fair Pages it's a it's a static site use
+[17:50] static deployments really fast really
+[17:53] cheap really simple easy solution there
+[17:56] okay let's get to the fun one my app is
+[17:58] a mix of client side and server side
+[18:00] code for example you have a front end
+[18:02] you have a back end you actually have
+[18:04] options dog what's up dog so the easy
+[18:08] solution if you don't care run it as a
+[18:10] monole reserve VM what do I mean when I
+[18:12] say monor repple stuff all that that
+[18:14] jazz in one repple and just run it we're
+[18:18] just going to spin up two services at
+[18:19] the same time you have to play around
+[18:21] with this a bit I have a tutorial
+[18:22] actually on how to do this so uh rather
+[18:25] than just taking my word for it go watch
+[18:27] the tutorial which I'll link in the
+[18:28] description below uh and just deploy it
+[18:30] as a single reppel that's a simple
+[18:31] solution um if your app is like a next
+[18:34] app that just kind of has those Services
+[18:36] baked in it's actually really
+[18:37] straightforward it only requires one
+[18:39] command now the more complex or more
+[18:41] advanced solution would be to spin up
+[18:43] two reppel and have them talk to each
+[18:45] other for example say you have a server
+[18:48] you could build out a reppel that's a
+[18:49] server deploy it now you have a reel
+[18:51] that's a server it's listening on some
+[18:53] port at some address the cool thing
+[18:55] about development environments right is
+[18:57] because a develop environment is exposed
+[18:59] to the web while you're developing you
+[19:01] just use that development environment um
+[19:04] as the server basically and you can
+[19:05] develop live both the server and the
+[19:07] front end it's kind of neat um and you
+[19:11] deploy that server and then you have
+[19:13] your front end and you deploy the front
+[19:14] end separately advantages here well you
+[19:18] could basically segment the parts that
+[19:20] you're getting built for so maybe I only
+[19:21] want to be build for this like reserve
+[19:23] VM and then I want to offload the
+[19:25] traffic like all the people visiting my
+[19:27] app like most of it's client side so we
+[19:29] want their client to handle most of the
+[19:31] workload and that way I'm not paying for
+[19:33] it but then when they make calls to the
+[19:34] server when they're hitting the API we
+[19:35] want to return data dynamically I have a
+[19:38] tutorial on how to do that I have a
+[19:39] tutorial on how to sort of deploy a
+[19:41] static front end with a dynamic backend
+[19:44] thus reducing the cost offloading most
+[19:46] of the work to the client saving you
+[19:47] money maybe a little bit more efficient
+[19:49] a different setup slightly more
+[19:51] complicated that's kind of the gist of
+[19:53] it but those that's my decision tree I'm
+[19:56] going to make this available to you I'm
+[19:57] going to put this in our document ation
+[19:59] um hopefully that kind of helps you
+[20:01] decide uh how you go about choosing what
+[20:04] type of deployment you want to share
+[20:05] with the world um hopefully this video
+[20:08] has helped you understand the different
+[20:09] types of deployments on repet and when
+[20:11] you use each type um again I'm Matt with
+[20:14] repet this has been an introduction to
+[20:15] the types of deployments we have and all
+[20:17] of our options for taking your idea and
+[20:20] putting it live on the internet but
+[20:21] until next time
+[20:27] peace e
